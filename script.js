@@ -63,7 +63,7 @@ let game = () => {
     let computerScore = 0;
     let draws = 0;
     
-    for (let i = 0; i < 5 ; i++) {
+    for (let i = 0; i < 5 ; i++){
         let roundResult = playRound();
         if (roundResult.slice(0,5) == `You w`){
             playerScore++;
@@ -71,6 +71,7 @@ let game = () => {
             computerScore++;
         } else if (roundResult == `Draw`) {
             draws++;
+            i--;
         } else {
             i--;
         }
