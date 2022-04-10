@@ -56,3 +56,26 @@ let playRound = (playerSelection, computerSelection) => {
     }
 }
 
+//game function, 5 round game.
+
+let game = () => {
+    let playerScore = 0;
+    let computerScore = 0;
+    let draws = 0;
+    
+    for (let i = 0; i < 5 ; i++) {
+        let roundResult = playRound();
+        if (roundResult.slice(0,5) == `You w`){
+            playerScore++;
+        } else if (roundResult.slice(0,5) == `You l`){
+            computerScore++;
+        } else if (roundResult == `Draw`) {
+            draws++;
+        } else {
+            i--;
+        }
+        console.log(`playerScore = ${playerScore}`);
+        console.log(`computerScore = ${computerScore}`)
+    }
+    return `Your score: ${playerScore}. Computer Score: ${computerScore}. Draws: ${draws}`;
+}
