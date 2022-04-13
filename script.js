@@ -1,18 +1,5 @@
 //computerPlay function, generates a random choice for the computer to play with.
 
-// let computerPlay = function() {
-//     let randomNumber = Math.floor(Math.random()*3);
-//     if (randomNumber == 0) {
-//         return 'rock';
-//     } else if (randomNumber == 1) {
-//         return 'paper';
-//     } else {
-//         return 'scissors';
-//     }
-// };
-
-
-//Arrow Function version:
 let computerPlay = () => {
     let randomNumber = Math.floor(Math.random()*3);
     if (randomNumber == 0) {
@@ -24,59 +11,92 @@ let computerPlay = () => {
     }
 }
 
-//playRound function, a single round of rock paper scissors game
+let playerScore = 0;
+let computerScore = 0;
+let draws = 0;
 
-
-let playRound = (playerSelection, computerSelection) => {
-    playerSelection = (prompt(`Choose rock/paper/scissors!`)).toLowerCase();
-    computerSelection = computerPlay();
-    console.log(computerSelection)
+let playRound = (choice) => {
+    let playerSelection = choice;
+    let computerSelection = computerPlay();
+    console.log(playerSelection);
+    console.log(computerSelection);
     if (playerSelection === computerSelection) {
-        return `Draw`;
+        draws++ ;
+        drawsText.textContent = `Draws: ${draws}`;
     } else if (playerSelection == 'rock') {
         if (computerSelection == 'paper') {
-            return `You lose! Paper beats Rock!`;
+            computerScore++ ;
+            computerScoreText.textContent = `Computer Score: ${computerScore}`;
         } else {
-            return `You win! Rock beats Scissors!`;
+            playerScore++ ;
+            playerScoreText.textContent = `Player Score: ${playerScore}`;
         }
     } else if (playerSelection == 'paper') {
         if (computerSelection == 'rock') {
-            return `You win! Paper beats Rock!`;
+            playerScore++  ;
+            playerScoreText.textContent = `Player Score: ${playerScore}`;
         } else {
-            return `You lose! Scissors beats Paper!`;
+            computerScore++ ;
+            computerScoreText.textContent = `Computer Score: ${computerScore}`; 
         }
     } else if (playerSelection == 'scissors'){
         if (computerSelection == 'rock') {
-            return `You lose! Rock beats Scissors!`;
+            computerScore++ ;
+            computerScoreText.textContent = `Computer Score: ${computerScore}`;
         } else {
-            return `You win! Scissors beats Paper!`;
+            playerScore++ ;
+            playerScoreText.textContent = `Player Score: ${playerScore}`;
         }
     } else {
-        return `Choose a valid option!`;
+        console.log(`Choose a valid option!`) ;
     }
-}
-
-//game function, 5 round game.
-
-let game = () => {
-    let playerScore = 0;
-    let computerScore = 0;
-    let draws = 0;
-    
-    for (let i = 0; i < 5 ; i++){
-        let roundResult = playRound();
-        if (roundResult.slice(0,5) == `You w`){
-            playerScore++;
-        } else if (roundResult.slice(0,5) == `You l`){
-            computerScore++;
-        } else if (roundResult == `Draw`) {
-            draws++;
-            i--;
+    if (playerScore == 5 || computerScore == 5) {
+        options.style.visibility = 'hidden';
+        if (playerScore > computerScore) {
+            result.textContent = `You won!`;
         } else {
-            i--;
+            result.textContent = `You lost. Try again!`;
         }
-        console.log(`playerScore = ${playerScore}`);
-        console.log(`computerScore = ${computerScore}`)
     }
-    return `Your score: ${playerScore}. Computer Score: ${computerScore}. Draws: ${draws}`;
 }
+
+/////////////////////////////////////////////////////////////////////////////
+// DOM section:
+//Player input:
+
+
+//container buttons:
+const options = document.querySelector('.options');
+
+//buttons:
+const btnNewGame = document.querySelector('#newGame');
+const btnRock = document.querySelector('#rock');
+const btnPaper = document.querySelector('#paper');
+const btnScissors = document.querySelector('#scissors');
+const btnPlayAgain = document.querySelector('#playAgain');
+//Text
+let playerScoreText = document.querySelector('#playerScoreText');
+let computerScoreText = document.querySelector('#computerScoreText');
+let drawsText = document.querySelector('#drawsText');
+let result = document.querySelector('.result');
+
+
+let playerChoice = (event) => playRound(event.target.id);
+
+//New game function:
+let game = () => options.style.visibility = 'visible';
+
+//Reload function:
+let reload = () => window.location.reload();
+
+//event listeners
+btnRock.addEventListener('click', playerChoice);
+btnPaper.addEventListener('click', playerChoice);
+btnScissors.addEventListener('click', playerChoice);
+btnNewGame.addEventListener('click', game);
+btnPlayAgain.addEventListener('click', reload);
+
+
+
+
+
