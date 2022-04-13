@@ -1,3 +1,7 @@
 .options {
     visibility: hidden;
 }
+
+#playAgain {
+    visibility: hidden;
+}

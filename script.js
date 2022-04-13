@@ -61,8 +61,6 @@ let playRound = (choice) => {
 }
 
 // DOM section:
-//Player input:
-
 
 //container buttons:
 const options = document.querySelector('.options');
@@ -80,18 +78,24 @@ let drawsText = document.querySelector('#drawsText');
 let result = document.querySelector('.result');
 
 
-let playerChoice = (event) => playRound(event.target.id);
-
 //New game function:
-let game = () => options.style.visibility = 'visible';
+let game = () => {
+    options.style.visibility = 'visible';
+    btnNewGame.style.visibility = 'hidden';
+    btnPlayAgain.style.visibility = 'visible';
+    
+    let playerChoice = (event) => playRound(event.target.id);
+    btnRock.addEventListener('click', playerChoice);
+    btnPaper.addEventListener('click', playerChoice);
+    btnScissors.addEventListener('click', playerChoice);
+    
+};
+
 
 //Reload function:
 let reload = () => window.location.reload();
 
-//event listeners
-btnRock.addEventListener('click', playerChoice);
-btnPaper.addEventListener('click', playerChoice);
-btnScissors.addEventListener('click', playerChoice);
+
 btnNewGame.addEventListener('click', game);
 btnPlayAgain.addEventListener('click', reload);
 
