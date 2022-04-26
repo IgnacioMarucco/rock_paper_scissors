@@ -53,10 +53,10 @@ function game() {
         }
         if (scoreComputer > 4 || scorePlayer > 4 ){
             btnChoice.forEach(choice => choice.disabled = true);
-            if (scoreComputer > scoreComputer) {
+            if (scoreComputer > scorePlayer) {
                 resultText.textContent = `You lost the game!`;
-            } else {
-                resultText.textContent = `You won    the game!`;
+            } else if (scoreComputer < scorePlayer){
+                resultText.textContent = `You won the game!`;
             }
         }
         console.log(`Player:${scorePlayer} Computer:${scoreComputer}  Draws:${draws} `)

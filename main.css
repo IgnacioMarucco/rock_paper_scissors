@@ -1,10 +1,28 @@
 * {
     margin: 0;
     padding: 0;
-    
+    box-sizing: border-box;
 }
-
+main {
+    background-color: beige;
+    min-height: 100vh;
+}
 input {
-    height: 200px;
-    width: 200px;
+    height: 150px;
+    width: 150px;
+}
+h1 {
+    text-align: center;
+    padding-bottom: 20px;
+    color: brown;
+}
+.playerUI {
+    display: flex;
+    justify-content: center;
+}
+.score {
+    display: flex;
+    flex-flow: column;
+    
+    align-items: center;
 }
