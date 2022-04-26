@@ -1,109 +1,83 @@
-//container buttons:
-const options = document.querySelector('.options');
-
-//buttons:
-const btnRock = document.querySelector('#rock');
-const btnPaper = document.querySelector('#paper');
-const btnScissors = document.querySelector('#scissors');
-const btnPlayAgain = document.querySelector('#playAgain');
-//Text
-let playerScoreText = document.querySelector('#playerScoreText');
-let computerScoreText = document.querySelector('#computerScoreText');
-let drawsText = document.querySelector('#drawsText');
-let result = document.querySelector('.result');
-let roundResult = document.querySelector('#roundResult')
-
-//Defaults
-let playerSelection;
-let playerScore = 0;
-let computerScore = 0;
-let draws = 0;
-
-// Computer Selection Function
-const rps = ["rock", "paper", "scissors"];
-
-let computerSelectionFunction = () => {
-    return rps[Math.floor(Math.random()*rps.length)];
+//Generate Computer Choice
+function computerPlay() {
+    return Math.floor(Math.random()*3);
 }
-// Player Selection Function
-let playerSelectionFunction = (event) => {
-    playerSelection = (event.target.id);
-    playRound(playerSelection, computerSelectionFunction());
-}
-btnRock.addEventListener('click', playerSelectionFunction);
-btnPaper.addEventListener('click', playerSelectionFunction);
-btnScissors.addEventListener('click', playerSelectionFunction);
+// Single Round Function
+function playRound(choicePlayer) {
+    let winner;
+    let choiceComputer = computerPlay();
+    
+    let playerScoreText = document.querySelector('#playerScoreText');
+    let computerScoreText = document.querySelector('#computerScoreText');
+    let drawsText = document.querySelector('#drawsText');
+    let resultText = document.querySelector('#result');
+    let roundResult = document.querySelector('#roundResult')
 
-// Winner Function
-
-let winnerFunction = (playerSelection, computerSelection) => {
-    if (playerSelection == computerSelection) {
+    if (choicePlayer === choiceComputer){
+        roundResult.textContent = `Tie!`;
         return 0;
-    } else if (
-    (playerSelection == "rock" && computerSelection == "paper") || 
-    (playerSelection == "paper" && computerSelection == "scissors") || 
-    (playerSelection == "scissors" && computerSelection == "rock") ) {
-        return 1;
-    } else {
-        return 2;
-    }
-}
-
-// Play Round Function
-let playRound = (playerSelection, computerSelection) => {
-    let winner = winnerFunction(playerSelection, computerSelection);
-
-
-    if (winner == 0) {
-        draws++;
-        roundResult.textContent = `It's a Tie!`;
-
-        drawsText.textContent = `Draws: ${draws}`;
-    } else if (winner == 1) {
-        computerScore++;
-        roundResult.textContent = `You lost this round! ${computerSelection} beats ${playerSelection}!`;
-
-        computerScoreText.textContent = `Computer Score: ${computerScore}`; 
-    } else {
-        playerScore++;
-        roundResult.textContent = `You won this round! ${playerSelection} beats ${computerSelection}!`;
-
-        playerScoreText.textContent = `Player Score: ${playerScore}`; 
-    }
-    bestOfFive();
-}
-
-
-// Best of five
-
-let bestOfFive = () => {
-    if (playerScore == 5 || computerScore == 5 ) {
-        if (playerScore > computerScore) {
-            result.textContent = `You won the game!`; 
-        } else if (computerScore > playerScore) {
-            result.textContent = `You lost the game!`;
+    } else if 
+        ((choicePlayer === 0 && choiceComputer === 1) ||
+        (choicePlayer === 1 && choiceComputer === 2) ||
+        (choicePlayer === 2 && choiceComputer === 0)) {
+            roundResult.textContent = `You lose this round! ${valueToString(choiceComputer)} beats ${valueToString(choicePlayer)}.`;
+            return 1;
+        } else {
+            roundResult.textContent = `You win this round! ${valueToString(choicePlayer)} beats ${valueToString(choiceComputer)}.`;
+            return 2;
         }
-        playerScore = 0;
-        computerScore = 0;
-        draws = 0;
-        btnRock.removeEventListener('click', playerSelectionFunction);
-        btnPaper.removeEventListener('click', playerSelectionFunction);
-        btnScissors.removeEventListener('click', playerSelectionFunction);
+}
+//Game Function (First player to earn 5 points)
+function game() {
+    let result = 0;
+    let scorePlayer = 0;
+    let scoreComputer = 0;
+    let draws = 0;
+    // Buttons
+    const btnChoice = document.querySelectorAll('.options input');
+    btnChoice.forEach(choice => choice.addEventListener('click', playerInput));
 
+    function playerInput(e) {
+        choicePlayer = Number(e.target.value);
+        result = playRound(choicePlayer);
 
-        document.getElementById("rock").disabled = true;
-        document.getElementById("paper").disabled = true;
-        document.getElementById("scissors").disabled = true;
+        if (result === 0) {
+            draws++;
+            drawsText.textContent = `Draws: ${draws}`;
+        } else if (result === 1) {
+            scoreComputer++;
+            computerScoreText.textContent = `Computer Score: ${scoreComputer}`; 
+        } else {
+            scorePlayer++;
+            playerScoreText.textContent = `Player Score: ${scorePlayer}`;
+        }
+        if (scoreComputer > 4 || scorePlayer > 4 ){
+            btnChoice.forEach(choice => choice.disabled = true);
+            if (scoreComputer > scoreComputer) {
+                resultText.textContent = `You lost the game!`;
+            } else {
+                resultText.textContent = `You won    the game!`;
+            }
+        }
+        console.log(`Player:${scorePlayer} Computer:${scoreComputer}  Draws:${draws} `)
+    }
+}
 
-        btnPlayAgain.style.visibility = 'visible';
-
+//Values to String Function
+function valueToString(value){
+    if (value === 0){
+        return `Rock`;
+    } else if (value === 1){
+        return `Paper`;
+    } else if (value === 2){
+        return `Scissors`;
     }
 }
 
 //Reload function:
 let reload = () => window.location.reload();
 
-
-// btnNewGame.addEventListener('click', game);
+const btnPlayAgain = document.querySelector('#reload');
 btnPlayAgain.addEventListener('click', reload);
 
+game();

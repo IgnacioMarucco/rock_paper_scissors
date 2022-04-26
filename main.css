@@ -1,7 +1,10 @@
-.options {
-    visibility: visible;
+* {
+    margin: 0;
+    padding: 0;
+    
 }
 
-#playAgain {
-    visibility: hidden;
+input {
+    height: 200px;
+    width: 200px;
 }
